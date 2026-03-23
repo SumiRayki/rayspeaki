@@ -94,16 +94,38 @@ rayspeaki/
 
 ### Deploy / 部署
 
+#### Option 1: Pull from Docker Hub / 从 Docker Hub 拉取（推荐）
+
+Pre-built image available at [`raykii/rayspeaki`](https://hub.docker.com/r/raykii/rayspeaki).
+
+预构建镜像已发布到 Docker Hub，无需本地编译。
+
+```bash
+# Download compose file and env template
+curl -O https://raw.githubusercontent.com/SumiRayki/rayspeaki/main/docker-compose.truenas.yml
+curl -O https://raw.githubusercontent.com/SumiRayki/rayspeaki/main/.env.example
+
+cp .env.example .env
+# Edit .env — set your passwords / 编辑 .env 设置密码
+nano .env
+
+# Start (pulls image automatically)
+docker compose -f docker-compose.truenas.yml up -d
+
+# Access web client at http://your-server-ip:4000
+```
+
+#### Option 2: Build from source / 从源码构建
+
 ```bash
 git clone https://github.com/SumiRayki/rayspeaki.git
 cd rayspeaki
 
-# Configure environment
 cp .env.example .env
 # Edit .env — set your passwords and TURN credentials
 nano .env
 
-# Start all services
+# Build and start all services
 docker compose up -d --build
 
 # Access web client at http://your-server-ip:4000
