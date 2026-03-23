@@ -130,27 +130,3 @@ docker compose down -v
 2. 导入新环境：`docker exec -i rayspeaki-db psql -U rayspeaki rayspeaki < old_data.sql`
 
 ---
-
-## TrueNAS 部署
-
-将 `docker-compose.yml` 和 `.env` 放置于 TrueNAS 的 App 目录，
-volumes 路径会自动映射到 TrueNAS 数据集。
-
-若使用外部路径挂载数据（替代 named volumes），在 `docker-compose.yml` 中
-修改 volumes 部分：
-
-```yaml
-volumes:
-  postgres_data:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /mnt/SSD/appdata/rayspeaki/postgres
-  redis_data:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /mnt/SSD/appdata/rayspeaki/redis
-```
