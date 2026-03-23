@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 启动主题：纯黑背景，避免白屏闪烁 -->
+    <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        <item name="android:windowBackground">#FF0A0A0F</item>
+        <item name="android:windowFullscreen">false</item>
+    </style>
+
+    <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        <item name="android:windowBackground">#FF0A0A0F</item>
+    </style>
+</resources>

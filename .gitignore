@@ -1,0 +1,64 @@
+# Environment files with secrets
+.env
+server/.env
+
+# Legacy / deprecated
+rayspeaki_old/
+/android/
+
+# Claude Code
+.claude/
+
+# Node.js
+node_modules/
+
+# Electron build output
+electron/dist/
+electron/renderer-dist/
+electron/out/
+electron/release/
+
+# Flutter / Dart
+.dart_tool/
+.packages
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+*.apk
+*.aab
+
+# Android
+.gradle/
+**/android/app/build/
+**/android/build/
+local.properties
+
+# iOS
+**/ios/Pods/
+**/ios/.symlinks/
+
+# Go binaries
+goapi/goapi
+server/goapi/goapi
+
+# Compiled server JS
+server/server/dist/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+
+# Flutter lock file (platform-specific)
+flutter_client/pubspec.lock
+

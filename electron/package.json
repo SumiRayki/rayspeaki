@@ -1,0 +1,47 @@
+{
+  "name": "rayspeaki",
+  "version": "1.0.0",
+  "description": "RaySpeaki Voice Chat Client",
+  "main": "dist/main.js",
+  "scripts": {
+    "build:renderer": "vite build",
+    "build:main": "tsc",
+    "build": "npm run build:renderer && npm run build:main",
+    "start": "npm run build && electron .",
+    "dev": "npm run build:renderer && tsc && electron . --dev",
+    "package": "npm run build && electron-builder --win --x64",
+    "package:dir": "npm run build && electron-builder --win --x64 --dir"
+  },
+  "build": {
+    "appId": "com.rayspeaki.client",
+    "productName": "RaySpeaki",
+    "directories": {
+      "output": "release"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "resources/icon.ico"
+    },
+    "files": [
+      "dist/**/*",
+      "renderer-dist/**/*",
+      "resources/**/*"
+    ]
+  },
+  "dependencies": {
+    "@shiguredo/rnnoise-wasm": "^2025.1.5",
+    "mediasoup-client": "^3.7.18",
+    "socket.io-client": "^4.8.1"
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.1.8",
+    "typescript": "^5.7.3",
+    "vite": "^6.2.1"
+  }
+}

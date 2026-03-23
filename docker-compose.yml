@@ -1,0 +1,95 @@
+name: rayspeaki
+
+services:
+
+  # ── PostgreSQL ──────────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: rayspeaki-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: rayspeaki
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-rayspeaki_db_pass}
+      POSTGRES_DB: rayspeaki
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rayspeaki"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ── Redis ───────────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: rayspeaki-redis
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # ── Go API ──────────────────────────────────────────────────────────────────
+  goapi:
+    build:
+      context: ./goapi
+      dockerfile: Dockerfile
+    container_name: rayspeaki-api
+    restart: unless-stopped
+    environment:
+      API_PORT: "3000"
+      SERVER_PASSWORD: ${SERVER_PASSWORD:-changeme}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin_changeme}
+      DB_URL: postgres://rayspeaki:${DB_PASSWORD:-rayspeaki_db_pass}@postgres:5432/rayspeaki
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "${API_PORT:-3000}:3000"
+
+  # ── MediaSoup + coturn (single container) ───────────────────────────────────
+  app:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+      # args:
+        # HTTP_PROXY: ""
+        # HTTPS_PROXY: ""
+    container_name: rayspeaki-app
+    restart: unless-stopped
+    environment:
+      PORT: "4000"
+      DB_URL: postgres://rayspeaki:${DB_PASSWORD:-rayspeaki_db_pass}@postgres:5432/rayspeaki
+      REDIS_URL: redis://redis:6379
+      RTC_MIN_PORT: "40000"
+      RTC_MAX_PORT: "40100"
+      TURN_USER: ${TURN_USER:-rayspeaki}
+      TURN_CREDENTIAL: ${TURN_CREDENTIAL:-rayspeakiturn}
+      TURN_REALM: ${TURN_REALM:-rayspeaki}
+      MEDIASOUP_ANNOUNCED_IP: ${MEDIASOUP_ANNOUNCED_IP:-}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "${APP_PORT:-4000}:4000"         # Web client + signaling
+      - "3478:3478/udp"                  # STUN/TURN
+      - "40000-40100:40000-40100/udp"    # MediaSoup WebRTC RTP (UDP)
+      - "40000-40100:40000-40100/tcp"    # MediaSoup WebRTC RTP (TCP fallback)
+      - "49152-49252:49152-49252/udp"    # TURN relay ports
+    # Required for MediaSoup worker process
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+
+volumes:
+  postgres_data:
+  redis_data:

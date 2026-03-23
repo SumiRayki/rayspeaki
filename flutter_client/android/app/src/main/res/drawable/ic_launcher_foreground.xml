@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- "R" 字母主体 — RaySpeaki 的标志性首字母 -->
+    <!-- R 的竖线 -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M38,30 L44,30 L44,78 L38,78 Z" />
+
+    <!-- R 的上半圆弧（头部） -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M44,30 L56,30 Q68,30 68,43 Q68,56 56,56 L44,56 L44,50 L55,50 Q62,50 62,43 Q62,36 55,36 L44,36 Z" />
+
+    <!-- R 的右腿 -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M52,56 L58,52 L70,78 L63,78 Z" />
+
+    <!-- 右侧三条声波线 — 表示语音 -->
+    <!-- 近声波 -->
+    <path
+        android:pathData="M66,36 Q72,40 72,46 Q72,52 66,56"
+        android:strokeWidth="2.5"
+        android:strokeColor="#A8F0D0"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000" />
+
+    <!-- 中声波 -->
+    <path
+        android:pathData="M70,30 Q79,37 79,46 Q79,55 70,62"
+        android:strokeWidth="2.5"
+        android:strokeColor="#A8F0D0"
+        android:strokeAlpha="0.7"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000" />
+
+    <!-- 远声波 -->
+    <path
+        android:pathData="M74,24 Q86,34 86,46 Q86,58 74,68"
+        android:strokeWidth="2"
+        android:strokeColor="#A8F0D0"
+        android:strokeAlpha="0.4"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000" />
+
+</vector>

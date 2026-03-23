@@ -1,0 +1,30 @@
+services:
+  rayspeaki:
+    image: raykii/rayspeaki:latest
+    container_name: rayspeaki
+    restart: unless-stopped
+    environment:
+      PORT: "4000"
+      PG_USER: "rayspeaki"
+      PG_PASSWORD: "${DB_PASSWORD:-rayspeaki}"
+      PG_DB: "rayspeaki"
+      DB_URL: "postgres://rayspeaki:${DB_PASSWORD:-rayspeaki}@127.0.0.1:5432/rayspeaki"
+      REDIS_URL: "redis://127.0.0.1:6379"
+      GO_API_URL: "http://127.0.0.1:3000"
+      SERVER_PASSWORD: "${SERVER_PASSWORD:-changeme}"
+      ADMIN_PASSWORD: "${ADMIN_PASSWORD:-admin_changeme}"
+      RTC_MIN_PORT: "40000"
+      RTC_MAX_PORT: "40100"
+      MEDIASOUP_ANNOUNCED_IP: ""
+      TURN_USER: "${TURN_USER:-rayspeaki}"
+      TURN_CREDENTIAL: "${TURN_CREDENTIAL:-rayspeakiturn}"
+      TURN_REALM: "${TURN_REALM:-rayspeaki}"
+    ports:
+      - "4000:4000"
+      - "3478:3478/udp"
+      - "40000-40100:40000-40100/udp"
+      - "40000-40100:40000-40100/tcp"
+      - "50000-50100:50000-50100/udp"
+    volumes:
+      - /mnt/SSD/appdata/rayspeaki/postgres:/var/lib/postgresql/data
+      - /mnt/SSD/appdata/rayspeaki/redis:/var/lib/redis

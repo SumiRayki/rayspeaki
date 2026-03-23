@@ -1,0 +1,17 @@
+{
+  "name": "rayspeaki-web",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@shiguredo/rnnoise-wasm": "^2025.1.5",
+    "mediasoup-client": "^3.7.18",
+    "socket.io-client": "^4.8.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3",
+    "vite": "^6.2.1"
+  }
+}

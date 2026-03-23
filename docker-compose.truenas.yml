@@ -1,0 +1,55 @@
+name: rayspeaki
+
+services:
+  app:
+    image: raykii/rayspeaki:latest
+    container_name: rayspeaki
+    restart: unless-stopped
+    environment:
+      # ── Passwords ──
+      SERVER_PASSWORD: ${SERVER_PASSWORD:-changeme}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin_changeme}
+      # ── PostgreSQL (internal) ──
+      PG_USER: rayspeaki
+      PG_PASSWORD: ${DB_PASSWORD:-rayspeaki}
+      PG_DB: rayspeaki
+      # ── Connections (internal, all in one container) ──
+      DB_URL: postgres://rayspeaki:${DB_PASSWORD:-rayspeaki}@127.0.0.1:5432/rayspeaki
+      REDIS_URL: redis://127.0.0.1:6379
+      API_PORT: "3000"
+      PORT: "4000"
+      # ── WebRTC / TURN ──
+      RTC_MIN_PORT: "40000"
+      RTC_MAX_PORT: "40100"
+      TURN_USER: ${TURN_USER:-rayspeaki}
+      TURN_CREDENTIAL: ${TURN_CREDENTIAL:-rayspeakiturn}
+      TURN_REALM: ${TURN_REALM:-rayspeaki}
+      # Leave empty to auto-detect public IP at startup
+      MEDIASOUP_ANNOUNCED_IP: ${MEDIASOUP_ANNOUNCED_IP:-}
+    ports:
+      - "4000:4000"                    # Web client + Socket.IO signaling
+      - "3478:3478/udp"               # STUN/TURN
+      - "40000-40100:40000-40100/udp" # MediaSoup WebRTC RTP
+      - "40000-40100:40000-40100/tcp" # MediaSoup WebRTC RTP (TCP fallback)
+      - "50000-50100:50000-50100/udp" # TURN relay ports
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - redis_data:/var/lib/redis
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+
+volumes:
+  postgres_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /mnt/SSD/appdata/rayspeaki/postgres
+  redis_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /mnt/SSD/appdata/rayspeaki/redis

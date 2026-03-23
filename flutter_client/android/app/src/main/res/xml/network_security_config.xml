@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- 信任用户安装的 CA 证书（自签名证书） -->
+    <base-config>
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="user" />
+        </trust-anchors>
+    </base-config>
+
+    <!-- 本地开发允许明文 -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">10.0.2.2</domain>
+        <domain includeSubdomains="true">localhost</domain>
+        <domain includeSubdomains="true">127.0.0.1</domain>
+    </domain-config>
+</network-security-config>
